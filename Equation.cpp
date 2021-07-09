@@ -21,11 +21,11 @@ double Equation::norm(std::vector<double>& v){
 void Equation::print(){
     std::cout << "A size: " << A.size() << " x " << A[0].size() << std::endl;
     for(auto row: A){
-        for(auto value: row) std::cout << value << ", ";
+        for(auto value: row) std::cout << value << "  ";
         std::cout << std::endl;
     }
     std::cout << std::endl << "b size: " << b.size() << std::endl;
-    for(auto value: b) std::cout << value << ", ";
+    for(auto value: b) std::cout << value << "  ";
     std::cout << std::endl;
 }
 
@@ -46,6 +46,7 @@ void Equation::jacobi(){
     int size = b.size();
     int iterations = 0;
     double sigma;
+    std::vector<double> res;
     std::vector<double> next_x(size, 0);
     while(true){
         iterations++;
@@ -58,16 +59,17 @@ void Equation::jacobi(){
             }
             next_x[i] = (b[i] - sigma) / A[i][i];
         } 
+        x.clear();
+        res.clear();
         copy(next_x.begin(), next_x.end(), std::back_inserter(x));
-        std::vector<double> res = multiply_A_x(); 
-        for(auto v: res) std::cout << v << ", ";
+        res = multiply_A_x(); 
         for(size_t i = 0; i < res.size(); ++i) res[i] -= b[i];
-        std::cout << std::endl;
-        for(auto v: res) std::cout << v << ", ";
-        if(norm(res) < 10e-4) break;
+        double diff = norm(res);
+        if(diff < 10e-9) break;
     }
-    std::cout << "Jacobi method, " <<  iterations << " iterations." << std::endl; 
-    for(auto value: x) std::cout << value << ", ";
+    std::cout << std::endl << "Jacobi method, " <<  iterations << " iterations.\nSolution:" << std::endl; 
+    for(auto value: x) std::cout << value << "  ";
+    std::cout << std::endl;
 }
 
 void gauss_seidel(){
