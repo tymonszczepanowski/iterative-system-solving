@@ -1,7 +1,13 @@
 #include "Equation.h"
+#include <iostream>
 #include <math.h>
 
 Equation::Equation(std::vector<std::vector<double>>& matrixA, std::vector<double>& vectorb){
+    for(auto row: matrixA){
+        A.push_back(row);
+        x.push_back(0);
+    }
+    std::copy(vectorb.begin(), vectorb.end(), std::back_inserter(b));
 }
 
 double Equation::norm(std::vector<double>& v){
@@ -9,10 +15,21 @@ double Equation::norm(std::vector<double>& v){
     for(auto value: v){
         sum += value * value;
     }
-    return sqrt(value);
+    return sqrt(sum);
 }
 
-std::vector<double> multiply_A_x(){
+void Equation::print(){
+    std::cout << "A size: " << A.size() << " x " << A[0].size() << std::endl;
+    for(auto row: A){
+        for(auto value: row) std::cout << value << ", ";
+        std::cout << std::endl;
+    }
+    std::cout << std::endl << "b size: " << b.size() << std::endl;
+    for(auto value: b) std::cout << value << ", ";
+    std::cout << std::endl;
+}
+
+std::vector<double> Equation::multiply_A_x(){
     std::vector<double> result;
     double temp;
     for(auto row: A){
@@ -25,11 +42,7 @@ std::vector<double> multiply_A_x(){
     return result;
 }
 
-void subtract_b(std::vector<double>& v){
-    for(size_t i = 0; i < v.size(); ++i) v[i] -= b[i];
-}
-
-void jacobi(){
+void Equation::jacobi(){
     int size = b.size();
     int iterations = 0;
     double sigma;
@@ -47,8 +60,11 @@ void jacobi(){
         } 
         copy(next_x.begin(), next_x.end(), std::back_inserter(x));
         std::vector<double> res = multiply_A_x(); 
-        subtract_b(res);
-        if(norm(res) < 10e-9) break;
+        for(auto v: res) std::cout << v << ", ";
+        for(size_t i = 0; i < res.size(); ++i) res[i] -= b[i];
+        std::cout << std::endl;
+        for(auto v: res) std::cout << v << ", ";
+        if(norm(res) < 10e-4) break;
     }
     std::cout << "Jacobi method, " <<  iterations << " iterations." << std::endl; 
     for(auto value: x) std::cout << value << ", ";
@@ -58,7 +74,8 @@ void gauss_seidel(){
 
 }
 
-void solve(){
+void Equation::solve(){
+    print();
     jacobi();   
 }
 

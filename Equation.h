@@ -7,12 +7,12 @@ class Equation{
         std::vector<double> b;
         double norm(std::vector<double>& v);
         std::vector<double> multiply_A_x();
-        void subtract_b();
         void jacobi();
         void gauss_seidel();
+        void print();
         
     public: 
-        Equation(Matrix* matrixA, Matrix* vectorb);
+        Equation(std::vector<std::vector<double>>&  matrixA, std::vector<double>& vectorb);
         void solve();
         ~Equation();
-}
+};
