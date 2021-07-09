@@ -9,8 +9,7 @@ class Equation{
         std::vector<double> multiply_A_x();
         void jacobi();
         void gauss_seidel();
-        void print();
-        
+        void print();        
     public: 
         Equation(std::vector<std::vector<double>>&  matrixA, std::vector<double>& vectorb);
         void solve();
