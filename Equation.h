@@ -6,6 +6,8 @@ class Equation{
         std::vector<double> x;
         std::vector<double> b;
         double norm(std::vector<double>& v);
+        std::vector<double> multiply_A_x();
+        void subtract_b();
         void jacobi();
         void gauss_seidel();
         
