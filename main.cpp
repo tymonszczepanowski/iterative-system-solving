@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Equation.h"
+#include <math.h>
 
 void test1(){
     std::cout << "Test 1, exact solution: (1, 2, -1, 1)" << std::endl;
@@ -17,8 +18,32 @@ void test1(){
     
     Equation* Eq = new Equation(matrixA, vectorb);
     Eq->solve();
+    delete Eq;
+}
+
+void test2(){
+    int size = 1000;
+    std::cout << "Test 2, diagonally dominant matrix of size: " << size  << std::endl;
+    
+    std::vector<std::vector<double>> matrixA;
+    std::vector<double> vectorb;
+    
+    std::vector<double> row(size, 0);
+    for(int i = 0; i < size; ++i) matrixA.push_back(row);
+    
+    for(int i = 0; i < size; ++i) matrixA[i][i] = 10;
+    for(int i = 0; i < size; ++i){
+        if(i - 1 >= 0) matrixA[i-1][i] = -1;
+        if(i + 1 < size) matrixA[i+1][i] = -1;
+        vectorb.push_back(sin(i * 2));
+    } 
+
+    Equation* Eq = new Equation(matrixA, vectorb);
+    Eq->solve();
+    delete Eq;
 }
 int main(){
     test1();
+    test2();
     return 0;
 }
