@@ -45,7 +45,7 @@ std::vector<double> Equation::multiply_A_x(){
 void Equation::jacobi(){
     int size = b.size();
     int iterations = 0;
-    double sigma;
+    double sigma, diff;
     std::vector<double> res;
     std::vector<double> next_x(size, 0);
     while(true){
@@ -64,21 +64,48 @@ void Equation::jacobi(){
         copy(next_x.begin(), next_x.end(), std::back_inserter(x));
         res = multiply_A_x(); 
         for(size_t i = 0; i < res.size(); ++i) res[i] -= b[i];
-        double diff = norm(res);
-        if(diff < 10e-9) break;
+        diff = norm(res);
+        if(diff < 10e-12) break;
     }
-    std::cout << std::endl << "Jacobi method, " <<  iterations << " iterations.\nSolution:" << std::endl; 
-    for(auto value: x) std::cout << value << "  ";
+    std::cout << std::endl << "Jacobi method, " <<  iterations << " iterations." << std::endl; 
+    std::cout << "Difference: " << diff << std::endl;
+    //for(auto value: x) std::cout << value << "  ";
     std::cout << std::endl;
 }
 
-void gauss_seidel(){
-
+void Equation::gauss_seidel(){
+    x.clear();
+    int size = b.size();
+    for(int i = 0; i < size; ++i) x.push_back(0);
+    int iterations = 0;
+    double sigma, diff;
+    std::vector<double> res;
+    while(true){
+        iterations++;
+        for(int i = 0; i < size; ++i){
+            sigma = 0;
+            for(int j = 0; j < size; ++j){
+                if(i != j){
+                    sigma += A[i][j] * x[j];
+                }
+            }
+            x[i] = (b[i] - sigma) / A[i][i];
+        } 
+        res.clear();
+        res = multiply_A_x(); 
+        for(size_t i = 0; i < res.size(); ++i) res[i] -= b[i];
+        diff = norm(res);
+        if(diff < 10e-12) break;
+    }
+    std::cout << std::endl << "Gauss seidel method, " <<  iterations << " iterations."<< std::endl; 
+    std::cout << "Difference: " << diff << std::endl;
+    //for(auto value: x) std::cout << value << "  ";
+    std::cout << std::endl;
 }
 
 void Equation::solve(){
-    print();
-    jacobi();   
+    jacobi();
+    gauss_seidel(); 
 }
 
 Equation::~Equation(){
