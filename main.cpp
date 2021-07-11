@@ -42,8 +42,8 @@ void test2(int size){
     delete Eq;
 }
 int main(){
-    //test1();
-    
-    for(int size = 1e2; size < 1e5; size *= 10) test2(size);
+    test1();
+    //for(int size = 1e2; size < 1e5; size *= 10) test2(size);
+
     return 0;
 }
