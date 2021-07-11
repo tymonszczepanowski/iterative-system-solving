@@ -1,6 +1,7 @@
 #include "Equation.h"
 #include <iostream>
 #include <math.h>
+#include <chrono>
 
 Equation::Equation(std::vector<std::vector<double>>& matrixA, std::vector<double>& vectorb){
     for(auto row: matrixA){
@@ -104,8 +105,17 @@ void Equation::gauss_seidel(){
 }
 
 void Equation::solve(){
+    auto start_jacobi = std::chrono::high_resolution_clock::now();
     jacobi();
+    auto stop_jacobi = std::chrono::high_resolution_clock::now();
+    auto duration_jacobi = std::chrono::duration_cast<std::chrono::microseconds>(stop_jacobi - start_jacobi);
+    std::cout << "Time Jacobi: " << duration_jacobi.count() << "ms" << std::endl;  
+
+    auto start_gauss = std::chrono::high_resolution_clock::now();
     gauss_seidel(); 
+    auto stop_gauss = std::chrono::high_resolution_clock::now();
+    auto duration_gauss = std::chrono::duration_cast<std::chrono::microseconds>(stop_gauss - start_gauss);
+    std::cout << "Time Gauss-Seidel: " << duration_gauss.count() << "ms" << std::endl;  
 }
 
 Equation::~Equation(){
