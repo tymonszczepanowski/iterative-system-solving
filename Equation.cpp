@@ -66,12 +66,10 @@ void Equation::jacobi(){
         res = multiply_A_x(); 
         for(size_t i = 0; i < res.size(); ++i) res[i] -= b[i];
         diff = norm(res);
-        if(diff < 10e-12) break;
+        if(diff < 10e-9) break;
     }
     std::cout << std::endl << "Jacobi method, " <<  iterations << " iterations." << std::endl; 
     std::cout << "Difference: " << diff << std::endl;
-    //for(auto value: x) std::cout << value << "  ";
-    std::cout << std::endl;
 }
 
 void Equation::gauss_seidel(){
@@ -96,26 +94,24 @@ void Equation::gauss_seidel(){
         res = multiply_A_x(); 
         for(size_t i = 0; i < res.size(); ++i) res[i] -= b[i];
         diff = norm(res);
-        if(diff < 10e-12) break;
+        if(diff < 10e-9) break;
     }
     std::cout << std::endl << "Gauss seidel method, " <<  iterations << " iterations."<< std::endl; 
     std::cout << "Difference: " << diff << std::endl;
-    //for(auto value: x) std::cout << value << "  ";
-    std::cout << std::endl;
 }
 
 void Equation::solve(){
     auto start_jacobi = std::chrono::high_resolution_clock::now();
     jacobi();
     auto stop_jacobi = std::chrono::high_resolution_clock::now();
-    auto duration_jacobi = std::chrono::duration_cast<std::chrono::microseconds>(stop_jacobi - start_jacobi);
+    auto duration_jacobi = std::chrono::duration_cast<std::chrono::milliseconds>(stop_jacobi - start_jacobi);
     std::cout << "Time Jacobi: " << duration_jacobi.count() << "ms" << std::endl;  
 
     auto start_gauss = std::chrono::high_resolution_clock::now();
     gauss_seidel(); 
     auto stop_gauss = std::chrono::high_resolution_clock::now();
-    auto duration_gauss = std::chrono::duration_cast<std::chrono::microseconds>(stop_gauss - start_gauss);
-    std::cout << "Time Gauss-Seidel: " << duration_gauss.count() << "ms" << std::endl;  
+    auto duration_gauss = std::chrono::duration_cast<std::chrono::milliseconds>(stop_gauss - start_gauss);
+    std::cout << "Time Gauss-Seidel: " << duration_gauss.count() << "ms" << std::endl << std::endl << std::endl;  
 }
 
 Equation::~Equation(){
