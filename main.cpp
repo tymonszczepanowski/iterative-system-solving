@@ -21,9 +21,8 @@ void test1(){
     delete Eq;
 }
 
-void test2(){
-    int size = 1000;
-    std::cout << "Test 2, diagonally dominant matrix of size: " << size  << std::endl;
+void test2(int size){
+    std::cout << "Diagonally dominant matrix of size: " << size  << std::endl;
     
     std::vector<std::vector<double>> matrixA;
     std::vector<double> vectorb;
@@ -43,7 +42,8 @@ void test2(){
     delete Eq;
 }
 int main(){
-    test1();
-    test2();
+    //test1();
+    
+    for(int size = 1e2; size < 1e5; size *= 10) test2(size);
     return 0;
 }
