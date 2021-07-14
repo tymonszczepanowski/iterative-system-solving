@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Equation.h"
 #include <math.h>
+#include <memory>
 
 void test1(){
     std::cout << "Test 1, exact solution: (1, 2, -1, 1)" << std::endl;
@@ -16,9 +17,8 @@ void test1(){
 
     std::vector<double> vectorb = {6, 25, -11, 15};
     
-    Equation* Eq = new Equation(matrixA, vectorb);
-    Eq->solve();
-    delete Eq;
+    std::unique_ptr<Equation> eq(new Equation(matrixA, vectorb));
+    eq->solve();
 }
 
 void test2(int size){
@@ -37,12 +37,12 @@ void test2(int size){
         vectorb.push_back(sin(i * 2));
     } 
 
-    Equation* Eq = new Equation(matrixA, vectorb);
-    Eq->solve();
-    delete Eq;
+    std::unique_ptr<Equation> eq(new Equation(matrixA, vectorb));
+    eq->solve();
 }
 int main(){
     test1();
+    test2(100);
     //for(int size = 1e2; size < 1e5; size *= 10) test2(size);
 
     return 0;
